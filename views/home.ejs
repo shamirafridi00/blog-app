@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+
+    <div class="main-content">
+        <div class="container">
+            <h1>My Blog</h1>
+
+            <!-- Create Post Form -->
+            <div class="create-post">
+                <h2>Create New Post</h2>
+                <form action="/posts" method="POST" class="post-form">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content:</label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+                    <button type="submit">Create Post</button>
+                </form>
+            </div>
+
+            <!-- Posts Section -->
+            <div class="posts">
+                <% if(posts.length===0) { %>
+                    <p class="no-posts">No posts yet. Create your first post!</p>
+                    <% } else { %>
+                        <% posts.forEach(post=> { %>
+                            <article class="post">
+                                <h3>
+                                    <%= post.title %>
+                                </h3>
+                                <div class="post-meta">Posted on <%= post.date %>
+                                </div>
+                                <p>
+                                    <%= post.content %>
+                                </p>
+
+                                <!-- Social Interactions -->
+                                <div class="post-interactions">
+                                    <div class="interaction-buttons">
+                                        <button class="like-btn" data-post-id="<%= post.id %>">
+                                            <i class="far fa-heart"></i>
+                                            <span class="like-count">0</span>
+                                        </button>
+                                        <button class="save-btn" data-post-id="<%= post.id %>">
+                                            <i class="far fa-bookmark"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Share Buttons -->
+                                    <div class="share-buttons">
+                                        <button class="share-btn facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </button>
+                                        <button class="share-btn twitter">
+                                            <i class="fab fa-twitter"></i>
+                                        </button>
+                                        <button class="share-btn linkedin">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Comments Section -->
+                                <div class="comments-section">
+                                    <h4>Comments</h4>
+                                    <form class="comment-form">
+                                        <textarea placeholder="Write a comment..." required></textarea>
+                                        <button type="submit">Post Comment</button>
+                                    </form>
+                                    <div class="comments-list">
+                                        <!-- Comments will be dynamically added here -->
+                                    </div>
+                                </div>
+
+                                <!-- Post Actions -->
+                                <div class="post-actions">
+                                    <a href="/posts/<%= post.id %>/edit" class="edit-btn">Edit</a>
+                                    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST"
+                                        class="delete-form">
+                                        <button type="submit" class="delete-btn">Delete</button>
+                                    </form>
+                                </div>
+                            </article>
+                            <% }) %>
+                                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
